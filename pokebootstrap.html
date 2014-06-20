@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></link>
+    <script type="text/javascript" src="../js/mustache.js"></script>
+
+  </head>
+
+
+  <body>
+    <script id="pokemon_detail" type="text/template">
+    
+    <div class="row">
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <img src="{{image}}" /><br />
+          <div class="caption">
+            <h3>Thumbnail label</h3>
+            {{#pokemon}}
+            {{national_id}} :: {{name}} <br />
+            Type(s):
+            <ul>
+              {{#types}}
+              <li>{{name}}</li>
+              {{/types}}
+            </ul>
+
+            Abilities:
+            <ul>
+              {{#abilities}}
+              <li>{{name}}</li>
+              {{/abilities}}
+            </ul>
+
+            Egg Group(s):
+            <ul>
+              {{#egg_groups}}
+              <li>{{name}}</li>
+              {{/egg_groups}}
+            </ul>
+
+            Evolves to {{#evolutions}}{{to}} {{/evolutions}}
+            {{/pokemon}}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </script>
+
+    <h1>Hello, world!</h1>
+
+    <div id="pokemonrender"></div>
+
+  </body>
+</html>

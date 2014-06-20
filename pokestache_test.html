@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+	<title>Pokemon Mustache Test</title>
+	<!-- Boostrap, Jquery, & Mustache-->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></link>
+	<script type="text/javascript" src="/js/mustache.js"></script>
+
+	<script type="text/javascript" src="/js/pkmn.js"></script>
+	<link rel="stylesheet" href="/css/pokemon.css"></link>
+
+	<script type="text/javascript">
+		function displayPokemonById() {
+			var id = $('#PokeID').val();
+			if (id == null || id == ""){
+				$('#pokemon').html("");
+				return false;
+			}
+      getPokemonById(id, 'pokemonrender');
+      $('input').val("");
+		}
+
+    function displayPokemonByName() {
+      var name = $('#PokeName').val();
+      if (name == null || name == "") {
+        $('#pokemon').html("");
+        return false;
+      }
+      var id = getPokemonIdByName(name);
+      getPokemonById(id, 'pokemonrender');
+      $('input').val("");
+    }
+	</script>
+</head>
+<body>
+  <div class="container">
+		<input id="PokeID" type="text" />
+		<button onclick="displayPokemonById()">Search by ID</button>
+    <br />
+    <input id="PokeName" type="text" />
+    <button onclick="displayPokemonByName()">Search by Name</button>
+		<div id='pokemonrender'></div>
+	</div><!--container-->
+</body>
+</html>
