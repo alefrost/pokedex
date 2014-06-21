@@ -34,27 +34,64 @@
     </div>
   </div>
 
+{{#moves}}
+  <h1>moves</h1>
   <div class="col-sm-2 col-md-2">
     <ul class="list-group">
-  	  {{#moves}}
-  	  {{#level}}
+      <li class="list-group-item levelup">Level Up <span class="badge">{{levelup.length}}</span></li>
+  	  {{#levelup}}
   	  <li class="list-group-item">
-  		{{level}} | {{name}}
+  		  {{level}} | {{name}}
   	  </li>
-  	  {{/level}}
-  	  {{/moves}}
+  	  {{/levelup}}
     </ul>
   </div>
 
   <div class="col-sm-2 col-md-2">
     <ul class="list-group">
-  	  {{#moves}}
-  	  {{^level}}
+      <li class="list-group-item machine">TM/HM<span class="badge">{{machine.length}}</span></li>
+  	  {{#machine}}
   	  <li class="list-group-item">
-  		{{level}} | {{name}}
+  		  <span class="label label-default">{{mach_id}}</span> {{name}}
   	  </li>
-  	  {{/level}}
-  	  {{/moves}}
+  	  {{/machine}}
     </ul>
   </div>
+
+  <div class="col-sm-2 col-md-2">
+    <ul class="list-group">
+      <li class="list-group-item tutor">Tutor<span class="badge">{{tutor.length}}</span></li>
+      {{#tutor}}
+      <li class="list-group-item">
+        {{name}}
+      </li>
+      {{/tutor}}
+    </ul>
+  </div>
+
+  <div class="col-sm-2 col-md-2">
+    <ul class="list-group">
+      <li class="list-group-item egg-moves">Old Moves<span class="badge">{{other.length}}</span></li>
+      {{#other}}
+      <li class="list-group-item">
+        {{name}}
+      </li>
+      {{/other}}
+    </ul>
+    <ul class="list-group">
+      <li class="list-group-item egg-moves">Egg Moves<span class="badge">{{egg_move.length}}</span></li>
+      {{#egg_move}}
+      <li class="list-group-item">
+        {{name}}
+      </li>
+      {{/egg_move}}
+    </ul>
+  </div>
+  {{/moves}}
 </div><!--row -->
+
+
+
+
+
+

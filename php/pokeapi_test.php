@@ -1,7 +1,10 @@
-<html>
-<head><title>Testing PokeAPI</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Testing PokeAPI</title>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-<script type="text/javascript" src="../js/mustache.js">
+<script type="text/javascript" src="/js/mustache.js"></script>
 <script>
 	function getPokemonById()
 	{
@@ -52,7 +55,7 @@
     		for  (var i = 0; i < pokedex.length; i++) {
     			if(i >= 718) {break;}
     			var nat_id = pokedex[i].resource_uri.slice(15,-1);
-    			htmlstr += '<img id="img'+pokedex[i].name+'" src="http://pokeapi.co/media/img/'+nat_id+'.png" />';
+    			htmlstr += '<img id="img'+pokedex[i].name+'" src="http://serebii.net/xy/pokemon/' + ('000' + nat_id).substr(-3) + '.png" />';
     			htmlstr += '<p>'+ nat_id + " : " + pokedex[i].name + '</p>\n';
     		}
     		$('#pokedex').html(htmlstr);

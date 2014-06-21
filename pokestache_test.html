@@ -29,8 +29,7 @@
         $('#pokemon').html("");
         return false;
       }
-      var id = getPokemonIdByName(name);
-      getPokemonById(id, 'pokemonrender');
+      getPokemonByName(name, 'pokemonrender');
       $('input').val("");
     }
 	</script>
