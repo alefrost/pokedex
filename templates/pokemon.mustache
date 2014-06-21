@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col-sm-6 col-md-3">
+    <div class="thumbnail">
+      <div class="caption">
+        <h3>{{national_id}} :: {{name}}</h3>
+        <ul class="list-group">
+          {{#types}}
+          <li class="list-group-item {{name}}">
+            {{name}}
+	        </li>
+          {{/types}}
+	      </ul>
+      </div>
+
+      <img src="{{image_src}}" style="background-color: #666666;"/>
+       <div class="caption">
+        Abilities:
+        <ul>
+          {{#abilities}}
+          <li>{{name}}</li>
+          {{/abilities}}
+        </ul>
+
+        Egg Group(s):
+        <ul>
+          {{#egg_groups}}
+          <li>{{name}}</li>
+          {{/egg_groups}}
+        </ul>
+        {{#evolutions.length}}
+        Evolves to {{#evolutions}}{{to}} {{/evolutions}}
+        {{/evolutions.length}}
+      </div><br />
+    </div>
+  </div>
+
+  <div class="col-sm-2 col-md-2">
+    <ul class="list-group">
+  	  {{#moves}}
+  	  {{#level}}
+  	  <li class="list-group-item">
+  		{{level}} | {{name}}
+  	  </li>
+  	  {{/level}}
+  	  {{/moves}}
+    </ul>
+  </div>
+
+  <div class="col-sm-2 col-md-2">
+    <ul class="list-group">
+  	  {{#moves}}
+  	  {{^level}}
+  	  <li class="list-group-item">
+  		{{level}} | {{name}}
+  	  </li>
+  	  {{/level}}
+  	  {{/moves}}
+    </ul>
+  </div>
+</div><!--row -->
