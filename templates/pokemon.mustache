@@ -34,60 +34,85 @@
     </div>
   </div>
 
-{{#moves}}
-  <h1>moves</h1>
-  <div class="col-sm-2 col-md-2">
-    <ul class="list-group">
-      <li class="list-group-item levelup">Level Up <span class="badge">{{levelup.length}}</span></li>
-  	  {{#levelup}}
-  	  <li class="list-group-item">
-  		  {{level}} | {{name}}
-  	  </li>
-  	  {{/levelup}}
-    </ul>
-  </div>
+  {{#moves}}
+  <div class="">
+    <table class="table table-hover table-condensed">
+      <tr class="info">
+        <th class="col-md-1"><span></span>Level</th>
+        <th>Move</th>
+      </tr>
 
-  <div class="col-sm-2 col-md-2">
-    <ul class="list-group">
-      <li class="list-group-item machine">TM/HM<span class="badge">{{machine.length}}</span></li>
-  	  {{#machine}}
-  	  <li class="list-group-item">
-  		  <span class="label label-default">{{mach_id}}</span> {{name}}
-  	  </li>
-  	  {{/machine}}
-    </ul>
-  </div>
+      {{#levelup}}
+      <tr>
+        <td>{{level}}</td>
+        <td>{{name}}</td>
+      </tr>
+      {{/levelup}}
+      {{^levelup}}
+      <tr>
+        <td colspan="2">No level up moves</td>
+      </tr>
+      {{/levelup}}
 
-  <div class="col-sm-2 col-md-2">
-    <ul class="list-group">
-      <li class="list-group-item tutor">Tutor<span class="badge">{{tutor.length}}</span></li>
+      <tr class="info">
+        <th class="col-md-1">TM/HM</th>
+        <th>Move</th>
+      </tr>
+      {{#machine}}
+      <tr>
+        <td><span class="label label-default">{{mach_id}}</span></td>
+        <td>{{name}}</td>
+      </tr>
+      {{/machine}}
+      {{^machine}}
+      <tr><td colspan="2">No TM/HM moves</td></tr>
+      {{/machine}}
+
+      <tr class="info">
+        <th class="col-md-1">Tutor</th>
+        <th>Move</th>
+      </tr>
       {{#tutor}}
-      <li class="list-group-item">
-        {{name}}
-      </li>
+      <tr>
+        <td></td>
+        <td>{{name}}</td>
+      </tr>
       {{/tutor}}
-    </ul>
-  </div>
+      {{^tutor}}
+      <tr><td>No tutored moves</td></tr>
+      {{/tutor}}
 
-  <div class="col-sm-2 col-md-2">
-    <ul class="list-group">
-      <li class="list-group-item egg-moves">Old Moves<span class="badge">{{other.length}}</span></li>
-      {{#other}}
-      <li class="list-group-item">
-        {{name}}
-      </li>
-      {{/other}}
-    </ul>
-    <ul class="list-group">
-      <li class="list-group-item egg-moves">Egg Moves<span class="badge">{{egg_move.length}}</span></li>
+      <tr class="info">
+        <th class="col-md-1">Egg Move</th>
+        <th>Move</th>
+      </tr>
       {{#egg_move}}
-      <li class="list-group-item">
-        {{name}}
-      </li>
+      <tr>
+        <td></td>
+        <td>{{name}}</td>
+      </tr>
       {{/egg_move}}
-    </ul>
+      {{^egg_move}}
+      <tr><td colspan="2">No egg moves</td></tr>
+      {{/egg_move}}
+
+      <tr class="info">
+        <th class="col-md-1">Transfer-Only</th>
+        <th>Move</th>
+      </tr>
+      {{#other}}
+      <tr>
+        <td></td>
+        <td>{{name}}</td>
+      </tr>
+      {{/other}}
+      {{^other}}
+      <tr><td colspan="2">No transfer-only moves</td></tr>
+      {{/other}}
+    </table>
   </div>
   {{/moves}}
+
 </div><!--row -->
 
 

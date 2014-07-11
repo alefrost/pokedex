@@ -149,7 +149,7 @@ function displayPokedex(renderID) {
                 // Display each row
                 var htmlstr = "";
                 for  (var i = 0; i < pokedex.length; i++) {
-                    if(i >= 718) {break;}
+                    //if(i >= 718) {break;}
                     var nat_id = pokedex[i].resource_uri.slice(15,-1);
                     htmlstr += '<img id="img'+pokedex[i].name+'" src="http://serebii.net/xy/pokemon/' + ('000' + nat_id).substr(-3) + '.png" />';
                     htmlstr += '<p>'+ nat_id + " : " + pokedex[i].name + '</p>\n';
