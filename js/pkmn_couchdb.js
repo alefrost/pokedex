@@ -62,13 +62,52 @@ function addPokedexAndPokemon() {
             url: 'http://127.0.0.1:5984/pokedex_dev01/pokedex-1/',
             dataType: 'json',
             success: function(data){
-            	//add_document('pokedex', 'pokedex-1', data);
                 pokedex = data.pokemon;
                 alert('got pokedex');
-                //list comes in garbled and needs sorted by national dex ID
-                //pokedex.sort(pokedex_sort);
-
                 requestPokemon(0,pokedex.length);
             }
         });
+}
+
+function requestDataToSave(i, limit, apiDataType) {
+	if (i > limit) {
+		alert("Requested all Data!");
+		return;
+	}
+
+    $.ajax({
+        url: 'http://pokeapi.co/api/v1/'+ apiDataType +'/' + i +  '/',
+        dataType: 'jsonp',
+        success: function(data){
+        	//alert(i);
+        	if (apiDataType = 'move') {
+        		// append move type by linking to list
+        	}
+
+        	add_document(doc_type, apiDataType+'-'+i, data)
+        	requestDataToSave(i+1, limit, apiDataType);
+        }
+    });
+}
+
+function saveMoves() {
+	alert('Saving Moves...')
+	//$.get()
+	//requestDataToSave(1, 625, 'move');
+}
+function saveTypes() {
+	alert('Saving Types...');
+	requestDataToSave(1, 18, 'type');
+}
+function saveAbilities() {
+	alert('Saving Abilities...');
+	requestDataToSave(1, 248, 'ability');
+}
+function saveEggGroups() {
+	alert('Saving Egg Groups...');
+	requestDataToSave(1,15,'egg');
+}
+function saveDescriptions() {
+	alert('Saving Descriptions... This will take a long time...');
+	requestDataToSave(1,100,'description'); //total 6610
 }

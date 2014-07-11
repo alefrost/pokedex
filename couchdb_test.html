@@ -42,9 +42,13 @@
 <body>
   <div class="container">
 	<button class="btn" onclick="get_db('test')">ping database</button>
-	<button class="btn" onclick="add_document('test',99,{'text': 'blahbhlahblajba'})">add to database</button>
-
-	<button class="btn" onclick="addPokedexAndPokemon()">Add Pokedex & Pokemon</button>
+	<button class="btn" onclick="add_document('test',99,{'text': 'blahbhlahblajba'})" disabled='true'>add to database</button>
+	<button class="btn" onclick="addPokedexAndPokemon()" disabled='true'>Add Pokedex & Pokemon</button>
+	<button class="btn" onclick="saveMoves()" disabled='true'>Add Moves</button>
+	<button class="btn" onclick="saveTypes()" disabled='true'>Add Types</button>
+	<button class="btn" onclick="saveAbilities()" disabled='true'>Add Abilities</button>
+	<button class="btn" onclick="saveEggGroups()" disabled='true'>Add EggGroups</button>
+	<button class="btn" onclick="saveDescriptions()" disabled='true'>Add Descriptions</button>
   </div><!--container-->
 </body>
 </html>
