@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+	<title>CouchDB Test</title>
+	<!-- Boostrap, Jquery, & Mustache-->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></link>
+	<script type="text/javascript" src="/js/mustache.js"></script>
+
+	<script type="text/javascript" src="/pokedex/js/pkmn.js"></script>
+	<script type="text/javascript" src="/pokedex/js/pkmn_couchdb.js"></script>
+	<script type="text/javascript" src="/pokedex/js/moves_list.js"></script>
+	<link rel="stylesheet" href="/pokedex/css/pokemon.css"></link>
+
+	<script type="text/javascript">
+	// insert inline tests here
+	</script>
+</head>
+<body>
+  <div class="container">
+  	<div class="jumbotron"><h1>Start Copying to CouchDB!</h1>
+	  	<div class="row">
+	  		<button class="btn btn-default" onclick="get_db('test')">ping database</button>
+	  		<div class="progress" id="testLoadBar"></div>
+	  	</div>
+	  	<br />
+	  	<div class="row">
+			<button class="btn btn-primary" onclick="addPokedexAndPokemon()" disabled='true'>Add Pokedex & Pokemon</button>
+			<div class="progress" id="pokemonLoadBar"></div>
+	  	</div>
+	  	<div class="row">
+			<button class="btn btn-success" onclick="saveMoves()" disabled='true'>Add Moves</button>
+			<div class="progress" id="moveLoadBar"></div>
+	  	</div>
+	  	<div class="row">
+			<button class="btn btn-info" onclick="saveTypes()" disabled='true'>Add Types</button>
+			<div class="progress" id="typeLoadBar"></div>
+	  	</div>
+	  	<div class="row">
+			<button class="btn btn-warning" onclick="saveAbilities()" disabled='true'>Add Abilities</button>
+			<div class="progress" id="abilityLoadBar"></div>
+	  	</div>
+	  	<div class="row">
+			<button class="btn btn-danger" onclick="saveEggGroups()" disabled='true'>Add EggGroups</button>
+			<div class="progress" id="eggLoadBar"></div>
+	  	</div>
+	  	<div class="row">
+			<button class="btn" onclick="saveDescriptions()" disabled='true'>Add Descriptions</button>
+			<div class="progress" id="descriptionLoadBar"></div>
+	  	</div>
+	  	<div class="row">
+	  		<button class="btn btn-default" onclick="downloadImages()" >Downlaod Pokemon Images</button>
+	  		<div class="progress" id="imageLoadBar"></div>
+	  	</div>
+	</div><!--jumbotron-->
+  </div><!--container-->
+</body>
+</html>

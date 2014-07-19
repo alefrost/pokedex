@@ -1,0 +1,22 @@
+#!/bin/bash
+# Download All Images for Mega Evolutions of Pokemon from
+# pokemon.com
+
+max=3
+url="http://assets22.pokemon.com/assets/cms2/img/pokedex/full/"
+for number in 460 359 142 306 65 181 354 9 257 6 445 282 94 130 214 229 115 448 310 303 308 150 127 212 248 3; do
+    numstring=$(printf "%03d" $number)
+    echo $url$numstring"_f2.png"
+    curl -o $numstring"_f2.png" $url$numstring"_f2.png"
+    
+    # Fetch second mega evolutions for Charizard and Mewtwo
+    if [ "$number" = "6" ]; then
+        echo $url$numstring"_f3.png"
+        curl -o $numstring"_f3.png" $url$numstring"_f3.png"
+    fi
+    if [ "$number" = "150" ]; then
+        echo $url$numstring"_f3.png"
+        curl -o $numstring"_f3.png" $url$numstring"_f3.png"
+    fi
+    number=$((number + 1))
+done

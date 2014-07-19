@@ -1,7 +1,7 @@
-var couch_url = 'http://127.0.1:5984/';
-
+var couch_url = 'http://localhost:5984/';
 function get_db(db_name) {
-	$.get(couch_url + db_name + '/', function (data) {
+	updateLoadBar(1, 1, 'testLoadBar');
+	$.get(couch_url + 'pokedex_dev01' + '/', function (data) {
 		alert(JSON.stringify(data));
 	});
 }
@@ -51,6 +51,7 @@ function requestPokemon(i, limit) {
         	} 	// normal pokemon; do thing special;
 
         	add_document(doc_type, 'pokemon-'+nat_id, pokemon)
+        	updateLoadBar(i, limit, 'pokemonLoadBar');
         	requestPokemon(i+1, limit);
         }
     });
@@ -59,8 +60,8 @@ function requestPokemon(i, limit) {
 
 function addPokedexAndPokemon() {
 	$.ajax({
-            url: 'http://127.0.0.1:5984/pokedex_dev01/pokedex-1/',
-            dataType: 'json',
+            url: 'http://pokeapi.co/api/v1/pokedex/1/',
+            dataType: 'jsonp',
             success: function(data){
                 pokedex = data.pokemon;
                 alert('got pokedex');
@@ -80,11 +81,12 @@ function requestDataToSave(i, limit, apiDataType) {
         dataType: 'jsonp',
         success: function(data){
         	//alert(i);
-        	if (apiDataType = 'move') {
+        	if (apiDataType == 'move') {
         		// append move type by linking to list
         	}
 
-        	add_document(doc_type, apiDataType+'-'+i, data)
+        	add_document(apiDataType, apiDataType+'-'+i, data)
+        	updateLoadBar(i, limit, apiDataType+'LoadBar');
         	requestDataToSave(i+1, limit, apiDataType);
         }
     });
@@ -109,5 +111,19 @@ function saveEggGroups() {
 }
 function saveDescriptions() {
 	alert('Saving Descriptions... This will take a long time...');
-	requestDataToSave(1,100,'description'); //total 6610
+	requestDataToSave(11,6610,'description'); //total 6610
+}
+
+function updateLoadBar(current, total, divID) {
+	var percentDone = Math.round(current/total*100);
+	var data = {
+		"percentDone": percentDone,
+		"current": current,
+		"total": total
+	};
+
+	$.get('/pokedex/templates/progressbar.mustache', function(template) {
+		var html = Mustache.to_html(template, data);
+        $('#'+divID).html(html);
+	})
 }

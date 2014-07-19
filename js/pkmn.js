@@ -11,8 +11,10 @@ function getPokemonById(id, renderId)
             success: function(pokemon){
                 // submit post request to php file... might not work due to JSONP datatype
                 var img = 'http://www.serebii.net/art/th/'+id+'.png';
-                pokemon["image_src"] = img;
-
+                var bigimg = 'http://assets22.pokemon.com/assets/cms2/img/pokedex/full/'+('000' + id).substr(-3)+'.png';
+                pokemon["image_src"] = bigimg;
+                //pokemon["megas"] = getMegaEvolutions(pokemon.name);
+                //pokemon["forms"] = getForms(pokemon.name);
                 formatMoves(pokemon);
 
                 $.get('/pokedex/templates/pokemon.mustache', function(template) {
@@ -42,6 +44,25 @@ function getPokemonByName(name, renderId)
             alert(errorThrown + ":\n" + textStatus);
         }
     });
+}
+
+function getMegaEvolutions(name) {
+    $.get('http://127.0.0.1/5984/pokedex_dev01/_design/pokemon/_view/megas', function(megaList) {
+        var evolutions = [];
+        for(var i=0;i<megaList.rows.length;i++) {
+            if(megaList.rows[i].key.indexOf(name)) {
+                evolutions.push(megaList.rows[i].value);
+            }
+        }
+        $.get('/pokedex/templates/megaEvolutions.mustache', function(template) {
+            var html = Mustache.to_html(template, evolutions);
+            //#('#megaEvolutions').html(html);
+        })
+    })
+}
+
+function getForms(name) {
+
 }
 
 function formatMoves(pokemon) {
