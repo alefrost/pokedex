@@ -1,19 +1,27 @@
+body {
+	padding-top: 20px;
+}
+.tab-pane{
+	padding-top:5px;
+}
 .bug{
 	color: white;
 	background-color: olive;
 }
 .dark{
 	color: white;
-	background-color: black;
+	background-color: #333;
 }
 .dragon{
 	color: white;
 	background-color: navy;
 }
 .electric{
+	color: #333;
 	background-color: yellow;
 }
 .fairy{
+	color: #333;
 	background-color: #FFC0CB; /*pink*/
 }
 .fighting{
@@ -25,6 +33,7 @@
 	background-color: red;
 }
 .flying{
+	color: #333;
 	background-color: #B0C4DE; /*lightsteelblue*/
 }
 .ghost{
@@ -36,12 +45,15 @@
 	background-color: green;
 }
 .ground{
+	color: #333;
 	background-color: #D2B48C; /*tan*/
 }
 .ice{
+	color: #333;
 	background-color: aqua;
 }
 .normal{
+	color: #333;
 	background-color: silver;
 }
 .poison{
@@ -49,11 +61,12 @@
 	background-color: purple;
 }
 .psychic{
+	color: #333;
 	background-color: fuchsia;
 }
 .rock{
 	color: white;
-	background-color: #CD853F; /*peru*/
+	background-color: #B8A038;
 }
 .steel{
 	color: white;

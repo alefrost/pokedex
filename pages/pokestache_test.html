@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
 	<title>Pokemon Mustache Test</title>
 	<!-- Boostrap, Jquery, & Mustache-->
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-	<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></link>
 	<script type="text/javascript" src="/js/mustache.js"></script>
 
@@ -19,29 +19,70 @@
 				$('#pokemon').html("");
 				return false;
 			}
-      getPokemonById(id, 'pokemonrender');
-      $('input').val("");
+		    getPokemonById(id, 'pokemonrender');
+		    $('input').val("");
 		}
 
-    function displayPokemonByName() {
-      var name = $('#PokeName').val();
-      if (name == null || name == "") {
-        $('#pokemon').html("");
-        return false;
-      }
-      getPokemonByName(name, 'pokemonrender');
-      $('input').val("");
-    }
+	    function SearchPokemon() {
+			var name = $('#PokeSearch').val();
+			if (name == null || name == "") {
+			$('#pokemon').html("");
+			return false;
+			}
+			getPokemonByName(name, 'pokemonrender');
+			$('input').val("");
+	    }
 	</script>
 </head>
 <body>
   <div class="container">
-		<input id="PokeID" type="text" />
-		<button onclick="displayPokemonById()">Search by ID</button>
-    <br />
-    <input id="PokeName" type="text" />
-    <button onclick="displayPokemonByName()">Search by Name</button>
-		<div id='pokemonrender'></div>
-	</div><!--container-->
+  	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	  <div class="container">
+	    <div class="navbar-header">
+	      <a class="navbar-brand" href="#">Dex</a>
+	    </div>  
+
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+	          <ul class="dropdown-menu" role="menu">
+	            <li><a href="#">Action</a></li>
+	            <li><a href="#">Another action</a></li>
+	            <li><a href="#">Something else here</a></li>
+	            <li class="divider"></li>
+	            <li><a href="#">Separated link</a></li>
+	            <li class="divider"></li>
+	            <li><a href="#">One more separated link</a></li>
+	          </ul>
+	        </li>
+	      </ul>
+	      <div class="navbar-form navbar-left inline" role="search">
+		    <div class="form-group">
+		      <input id="PokeSearch" type="text" class="form-control col-md-2" placeholder="Search">
+		  	</div>
+		  </div>
+		    <button class="btn btn-default navbar-btn" onclick="SearchPokemon()"><i class="glyphicon glyphicon-search"></i></button>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a href="#">Link</a></li>
+	        <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+	          <ul class="dropdown-menu" role="menu">
+	            <li><a href="#">Action</a></li>
+	            <li><a href="#">Another action</a></li>
+	            <li><a href="#">Something else here</a></li>
+	            <li class="divider"></li>
+	            <li><a href="#">Separated link</a></li>
+	          </ul>
+	        </li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+		
+	  </div>
+	
+	</nav>
+
+	<div id='pokemonrender'></div>
+  </div><!--container-->
 </body>
 </html>

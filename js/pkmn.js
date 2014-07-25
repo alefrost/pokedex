@@ -6,24 +6,28 @@
 function getPokemonById(id, renderId)
 {
 	$.ajax({
-            url: 'http://pokeapi.co/api/v1/pokemon/'+ id + '/',
-            dataType: 'jsonp',
-            success: function(pokemon){
-                // submit post request to php file... might not work due to JSONP datatype
-                var img = 'http://www.serebii.net/art/th/'+id+'.png';
-                var bigimg = 'http://assets22.pokemon.com/assets/cms2/img/pokedex/full/'+('000' + id).substr(-3)+'.png';
-                pokemon["image_src"] = bigimg;
-                //pokemon["megas"] = getMegaEvolutions(pokemon.name);
-                //pokemon["forms"] = getForms(pokemon.name);
-                formatMoves(pokemon);
+        url: 'http://127.0.0.1:5984/pokedex_dev01/pokemon-'+ id + '/',
+        dataType: 'json',
+        success: function(pokemon){
+            // submit post request to php file... might not work due to JSONP datatype
+            var img = '/pokedex/images/'+('000' + id).substr(-3)+'.png';
+            pokemon["image_src"] = img;
+            pokemon["forms"] = getForms(pokemon.name);
+            getDescriptions(pokemon["descriptions"]);
+            formatMoves(pokemon);
 
-                $.get('/pokedex/templates/pokemon.mustache', function(template) {
-                    //alert(JSON.stringify(pokemon));
-                    var html = Mustache.to_html(template, pokemon);
+            $.get('/pokedex/templates/pokemon.mustache', function(template) {
+                // fetch forms partial
+                $.get('/pokedex/templates/forms.mustache', function(partial) {
+                    var html = Mustache.to_html(template, pokemon, {'forms': partial});
                     $('#'+renderId).html(html);
-                });
-            }
-        });
+                })
+            });
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert(JSON.stringify(jqXHR) + ":\n" + textStatus);
+        }
+    });
 }
 
 /* Renders pokemon of the given name
@@ -38,7 +42,11 @@ function getPokemonByName(name, renderId)
         url: '/pokedex/js/InvertedIndexPokedex.json',
         success: function(invertedPokedex) {
             var id = JSON.stringify(invertedPokedex[name.toLowerCase()]);
-            getPokemonById(id, renderId);
+            if (id) {
+                getPokemonById(id, renderId);
+            } else {
+                getPokemonById(name, renderId);
+            }
         },
         error: function(jqXHR, textStatus, errorThrown) {
             alert(errorThrown + ":\n" + textStatus);
@@ -46,23 +54,40 @@ function getPokemonByName(name, renderId)
     });
 }
 
-function getMegaEvolutions(name) {
-    $.get('http://127.0.0.1/5984/pokedex_dev01/_design/pokemon/_view/megas', function(megaList) {
-        var evolutions = [];
-        for(var i=0;i<megaList.rows.length;i++) {
-            if(megaList.rows[i].key.indexOf(name)) {
-                evolutions.push(megaList.rows[i].value);
+function getForms(name, type) {
+    var forms = false;
+    $.ajax({
+        url: 'http://127.0.0.1:5984/pokedex_dev01/_design/pokemon/_view/formsAndMegas', 
+        dataType: 'json',
+        async: false,
+        success: function(formList) {
+            forms = [];
+            for(var i=0;i<formList['rows'].length;i++) {
+                if(formList.rows[i].key.indexOf(name) > -1) {
+                    forms.push(formList.rows[i].value);
+                }
             }
         }
-        $.get('/pokedex/templates/megaEvolutions.mustache', function(template) {
-            var html = Mustache.to_html(template, evolutions);
-            //#('#megaEvolutions').html(html);
-        })
-    })
+    });
+    if (forms.length > 0)
+        return forms;
+    return false;
 }
 
-function getForms(name) {
-
+function getMoveDetails(move_details) {
+    $.ajax({
+        url: 'http://127.0.0.1:5984/pokedex_dev01/move-' + move_details["resource_uri"].slice(13,-1),
+        async: false,
+        dataType: 'json',
+        success: function(move) {
+            move_details["description"] = move["description"];
+            move_details["power"] = move["power"];
+            move_details["accuracy"] = move["accuracy"];
+            move_details["category"] = move["category"];
+            move_details["pp"] = move["pp"];
+        }
+    })
+    return move_details;
 }
 
 function formatMoves(pokemon) {
@@ -138,15 +163,39 @@ function formatMoves(pokemon) {
             }
         }
     });
+    moves.tutor.sort(function(a, b) {
+        return a.name > b.name;
+    })
     moves.egg_move.sort(function(a, b) {
         return a.name > b.name;
     });
     moves.other.sort(function(a, b) {
         return a.name > b.name;
     });
-
+    moves.levelup = moves.levelup.map(getMoveDetails);
+    moves.machine = moves.machine.map(getMoveDetails);
+    moves.egg_move = moves.egg_move.map(getMoveDetails);
+    moves.tutor = moves.tutor.map(getMoveDetails);
+    moves.other = moves.other.map(getMoveDetails);
     // replace original moves list with formatted structure
     pokemon["moves"] = [moves];
+}
+
+function getDescriptions(descriptions) {
+    for (var i=0;i<descriptions.length;i++) {
+        $.ajax({
+            url: 'http://127.0.0.1:5984/pokedex_dev01/description-'+descriptions[i]["resource_uri"].slice(20,-1),
+            async: false,
+            dataType: 'json',
+            success: function (d) {
+                descriptions[i]["description"] = d["description"];
+                descriptions[i]["games"] = d["games"];
+            }
+        });
+    }
+    descriptions.sort(function(a, b) {
+        return a.id > b.id;
+    });
 }
 
 

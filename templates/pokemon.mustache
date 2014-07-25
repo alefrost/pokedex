@@ -1,122 +1,278 @@
 <div class="row">
-  <div class="col-sm-6 col-md-3">
+  <div class="page-header">
+    <h1><small>#{{national_id}}</small> {{name}}
+    <small>
+      {{#types}}
+      <ul class="list-group pull-right">
+        <li class="list-group-item {{name}}">{{name}}</li>
+      </ul>
+      {{/types}}
+    </small>
+    </h1>
+  </div><!--page-header-->
+
+  <!-- Column 1 -->
+  <div class="col-md-3">
     <div class="thumbnail">
-      <div class="caption">
-        <h3>{{national_id}} :: {{name}}</h3>
-        <ul class="list-group">
-          {{#types}}
-          <li class="list-group-item {{name}}">
-            {{name}}
-	        </li>
-          {{/types}}
-	      </ul>
+      <img src="{{image_src}}"/>
+    </div>
+    <div class="panel panel-info">
+      <div class="panel-heading">Stats<i class="glyphicon glyphicon-tasks pull-right"></i></div>
+        <table class="table">
+          <tr>
+            <td>HP:</td>
+            <td>{{hp}}</td>
+          </tr>
+          <tr>
+            <td>Attack:</td>
+            <td>{{attack}}</td>
+          </tr>
+          <tr>
+            <td>Defense:</td>
+            <td>{{defense}}</td>
+          </tr>
+          <tr>
+            <td>Sp. Atk:</td>
+            <td>{{sp_atk}}</td>
+          </tr>
+          <tr>
+            <td>Sp. Def:</td>
+            <td>{{sp_def}}</td>
+          </tr>
+          <tr>
+            <td>Speed:</td>
+            <td>{{speed}}</td>
+          </tr>
+        </table>
+    </div><!-- panel -->
+  </div><!-- Column 1 -->
+
+  <!-- Column 2 -->
+  <div class="col-md-9">
+    <!-- Nav tabs -->
+    <ul id="tabs" class="nav nav-tabs nav-justified" role="tablist">
+      <li class="active"><a href="#moves" role="tab" data-toggle="tab"><strong>Moves</strong></a></li>
+      <li><a href="#details" role="tab" data-toggle="tab"><strong>Details</strong></a></li>
+      <li><a href="#descriptions" role="tab" data-toggle="tab"><strong>Descriptions</strong></a></li>
+      {{#forms.length}}
+      <li><a href="#forms" role="tab" data-toggle="tab"><strong>Alternate Forms</strong></a></li>{{/forms.length}}
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <!--\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ MOVES /////////////////////////////////////////-->
+      <div id="moves" class="tab-pane active" style="height:505px;overflow-y:scroll;">
+        {{#moves}}
+        <table class="table table-hover table-condensed">
+          <tr class="info">
+            <th class="col-md-1"><span></span>Level</th>
+            <th>Move</th>
+            <th>Power</th>
+            <th>Accuracy</th>
+            <th>Category</th>
+            <th>PP</th>
+          </tr>
+
+          <!--\\\\\\\ LEVEL-UP MOVES ///////-->
+          {{#levelup}}
+          <tr data-toggle="collapse" data-target="#{{name}}Description">
+            <td>{{level}}</td>
+            <td>{{name}}</td>
+            <td>{{power}}</td>
+            <td>{{accuracy}}</td>
+            <td>{{category}}</td>
+            <td>{{pp}}</td>
+          </tr>
+          <tr class="warning">
+            <td style="padding:0px"></td>
+            <td colspan="4" style="padding:0px;">
+              <span id="{{name}}Description" class="collapse">{{description}}</span>
+            </td>
+            <td style="padding:0px"></td>
+          </tr>
+          {{/levelup}}
+          {{^levelup}}
+          <tr>
+            <td colspan="4">No level up moves</td>
+          </tr>
+          {{/levelup}}
+
+          <!--\\\\\\\ TM/HM MOVES ///////-->
+          <tr class="info">
+            <th class="col-md-1">TM/HM</th>
+            <th>Move</th>
+            <th>Power</th>
+            <th>Accuracy</th>
+            <th>Category</th>
+            <th>PP</th>
+          </tr>
+          {{#machine}}
+          <tr data-toggle="collapse" data-target="#{{name}}Description">
+            <td><span class="label label-default">{{mach_id}}</span></td>
+            <td>{{name}}</td>
+            <td>{{power}}</td>
+            <td>{{accuracy}}</td>
+            <td>{{category}}</td>
+            <td>{{pp}}</td>
+          </tr>
+          <tr class="warning">
+            <td style="padding:0px"></td>
+            <td colspan="4" style="padding:0px;">
+              <span id="{{name}}Description" class="collapse">{{description}}</span>
+            </td>
+            <td style="padding:0px"></td>
+          </tr>
+
+          {{/machine}}
+          {{^machine}}
+          <tr><td colspan="6">No TM/HM moves</td></tr>
+          {{/machine}}
+
+          <!--\\\\\\\ TUTOR MOVES ///////-->
+          <tr class="info">
+            <th class="col-md-1">Tutor</th>
+            <th>Move</th>
+            <th>Power</th>
+            <th>Accuracy</th>
+            <th>Category</th>
+            <th>PP</th>
+          </tr>
+          {{#tutor}}
+          <tr data-toggle="collapse" data-target="#{{name}}Description">
+            <td></td>
+            <td>{{name}}</td>
+            <td>{{power}}</td>
+            <td>{{accuracy}}</td>
+            <td>{{category}}</td>
+            <td>{{pp}}</td>
+          </tr>
+          <tr class="warning">
+            <td style="padding:0px"></td>
+            <td colspan="4" style="padding:0px;">
+              <span id="{{name}}Description" class="collapse">{{description}}</span>
+            </td>
+            <td style="padding:0px"></td>
+          </tr>
+
+          {{/tutor}}
+          {{^tutor}}
+          <tr><td colspan="6">No tutored moves</td></tr>
+          {{/tutor}}
+
+          <!--\\\\\\\ EGG MOVES ///////-->
+          <tr class="info">
+            <th class="col-md-1">Egg Move</th>
+            <th>Move</th>
+            <th>Power</th>
+            <th>Accuracy</th>
+            <th>Category</th>
+            <th>PP</th>
+          </tr>
+          {{#egg_move}}
+          <tr data-toggle="collapse" data-target="#{{name}}Description">
+            <td></td>
+            <td>{{name}}</td>
+            <td>{{power}}</td>
+            <td>{{accuracy}}</td>
+            <td>{{category}}</td>
+            <td>{{pp}}</td>
+          </tr>
+          <tr class="warning">
+            <td style="padding:0px"></td>
+            <td colspan="4" style="padding:0px;">
+              <span id="{{name}}Description" class="collapse">{{description}}</span>
+            </td>
+            <td style="padding:0px"></td>
+          </tr>
+
+          {{/egg_move}}
+          {{^egg_move}}
+          <tr><td colspan="6">No egg moves</td></tr>
+          {{/egg_move}}
+
+          <!--\\\\\\\ TRANSFER MOVES ///////-->
+          <tr class="info">
+            <th class="col-md-1">Transfer-Only</th>
+            <th>Move</th>
+            <th>Power</th>
+            <th>Accuracy</th>
+            <th>Category</th>
+            <th>PP</th>
+          </tr>
+          {{#other}}
+          <tr data-toggle="collapse" data-target="#{{name}}Description">
+            <td></td>
+            <td>{{name}}</td>
+            <td>{{power}}</td>
+            <td>{{accuracy}}</td>
+            <td>{{category}}</td>
+            <td>{{pp}}</td>
+          </tr>
+          <tr class="warning">
+            <td style="padding:0px"></td>
+            <td colspan="4" style="padding:0px;">
+              <span id="{{name}}Description" class="collapse">{{description}}</span>
+            </td>
+            <td style="padding:0px"></td>
+          </tr>
+
+          {{/other}}
+          {{^other}}
+          <tr><td colspan="6">No transfer-only moves</td></tr>
+          {{/other}}
+        </table>
+      </div>
+      {{/moves}}
+
+      <!--\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ DETAILS /////////////////////////////////////////-->
+      <div class="tab-pane" id="details" style="height:505px;overflow-y:scroll;">
+        <div class="col-md-6">
+          <div class="panel panel-success">
+            <div class="panel-heading">
+              Abilities:
+            </div>
+            <div class="panel-body">
+              <ul>
+                {{#abilities}}
+                <li>{{name}}</li>
+                {{/abilities}}
+              </ul>
+            </div><!-- panel body -->
+          </div><!-- panel -->
+        </div><!-- col -->
+        <div class="col-md-6">
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+              Egg Group(s):
+            </div>
+            <div class="panel-body">
+              <ul>
+                {{#egg_groups}}
+                <li>{{name}}</li>
+                {{/egg_groups}}
+              </ul>
+            </div><!-- panel body -->
+          </div><!-- panel -->
+        </div><!-- col -->
+            {{#evolutions.length}}
+            Evolves to {{#evolutions}}{{to}} {{/evolutions}}
+            {{/evolutions.length}}
       </div>
 
-      <img src="{{image_src}}" style="background-color: #666666;"/>
-       <div class="caption">
-        Abilities:
-        <ul>
-          {{#abilities}}
-          <li>{{name}}</li>
-          {{/abilities}}
-        </ul>
+      <!--\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ DESCRIPTIONS /////////////////////////////////////////-->
+      <div class="tab-pane" id="descriptions" style="height:505px;overflow-y:scroll;">
+        {{#descriptions}}
+        <blockquote>
+          <p>{{description}}</p>
+          <footer>{{#games}}{{name}} <strong>&#8212</strong> {{/games}}</footer>
+        </blockquote>
+        {{/descriptions}}
+      </div>
 
-        Egg Group(s):
-        <ul>
-          {{#egg_groups}}
-          <li>{{name}}</li>
-          {{/egg_groups}}
-        </ul>
-        {{#evolutions.length}}
-        Evolves to {{#evolutions}}{{to}} {{/evolutions}}
-        {{/evolutions.length}}
-      </div><br />
+      <!--\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ FORMS / MEGAS /////////////////////////////////////////-->
+      <div class="tab-pane" id="forms" style="height:505px;overflow-y:scroll;">
+        {{>forms}}
+      </div>
     </div>
-  </div>
-
-  {{#moves}}
-  <div class="">
-    <table class="table table-hover table-condensed">
-      <tr class="info">
-        <th class="col-md-1"><span></span>Level</th>
-        <th>Move</th>
-      </tr>
-
-      {{#levelup}}
-      <tr>
-        <td>{{level}}</td>
-        <td>{{name}}</td>
-      </tr>
-      {{/levelup}}
-      {{^levelup}}
-      <tr>
-        <td colspan="2">No level up moves</td>
-      </tr>
-      {{/levelup}}
-
-      <tr class="info">
-        <th class="col-md-1">TM/HM</th>
-        <th>Move</th>
-      </tr>
-      {{#machine}}
-      <tr>
-        <td><span class="label label-default">{{mach_id}}</span></td>
-        <td>{{name}}</td>
-      </tr>
-      {{/machine}}
-      {{^machine}}
-      <tr><td colspan="2">No TM/HM moves</td></tr>
-      {{/machine}}
-
-      <tr class="info">
-        <th class="col-md-1">Tutor</th>
-        <th>Move</th>
-      </tr>
-      {{#tutor}}
-      <tr>
-        <td></td>
-        <td>{{name}}</td>
-      </tr>
-      {{/tutor}}
-      {{^tutor}}
-      <tr><td>No tutored moves</td></tr>
-      {{/tutor}}
-
-      <tr class="info">
-        <th class="col-md-1">Egg Move</th>
-        <th>Move</th>
-      </tr>
-      {{#egg_move}}
-      <tr>
-        <td></td>
-        <td>{{name}}</td>
-      </tr>
-      {{/egg_move}}
-      {{^egg_move}}
-      <tr><td colspan="2">No egg moves</td></tr>
-      {{/egg_move}}
-
-      <tr class="info">
-        <th class="col-md-1">Transfer-Only</th>
-        <th>Move</th>
-      </tr>
-      {{#other}}
-      <tr>
-        <td></td>
-        <td>{{name}}</td>
-      </tr>
-      {{/other}}
-      {{^other}}
-      <tr><td colspan="2">No transfer-only moves</td></tr>
-      {{/other}}
-    </table>
-  </div>
-  {{/moves}}
-
-</div><!--row -->
-
-
-
-
-
-
+  </div><!-- Column 2 -->
+</div><!--row-->

@@ -1,0 +1,55 @@
+{{#forms}}
+<div class="panel col-md-6">
+	<div class="panel-heading">
+		<h4>{{name}}
+		<small>
+    	{{#types}}
+    	<ul class="list-group pull-right">
+        	<li class="list-group-item {{name}}">{{name}}</li>
+		</ul>
+		{{/types}}
+		</small>
+		</h4>
+	</div>
+	<div class="panel-body">
+		<div class="thumbnail col-md-7">
+			<img src="{{local_image_uri}}" />
+			<div class="caption">
+				<hr />
+				<strong>Ability:</strong> {{#abilities}}{{name}}{{/abilities}}
+			</div>
+		</div>
+		<div class="col-md-5">
+			<div class="panel panel-info">
+				<div class="panel-heading">Stats<i class="glyphicon glyphicon-tasks pull-right"></i></div>
+					<table class="table">
+						<tr>
+							<td>HP:</td>
+							<td>{{hp}}</td>
+						</tr>
+						<tr>
+							<td>Attack:</td>
+							<td>{{attack}}</td>
+						</tr>
+						<tr>
+							<td>Defense:</td>
+							<td>{{defense}}</td>
+						</tr>
+						<tr>
+							<td>Sp. Atk:</td>
+							<td>{{sp_atk}}</td>
+						</tr>
+						<tr>
+							<td>Sp. Def:</td>
+							<td>{{sp_def}}</td>
+						</tr>
+						<tr>
+							<td>Speed:</td>
+							<td>{{speed}}</td>
+						</tr>
+					</table>
+			</div><!--panel-->
+		</div><!-- col-md-3 -->
+	</div><!-- panel-content -->
+</div><!--panel-->
+{{/forms}}

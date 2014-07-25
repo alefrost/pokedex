@@ -1,0 +1,30 @@
+#!/bin/bash
+# Download All Images for Mega Evolutions of Pokemon from
+# pokemon.com
+
+max=3
+url="http://assets22.pokemon.com/assets/cms2/img/pokedex/full/"
+for number in 386 412 413 479 487 492 550 585 586 641 642 645 646 647 648 681 351 421 422 423 676; do
+    numstring=$(printf "%03d" $number)
+    
+    formcap=3
+    if [ "$number" = "386" ] || [ "$number" = "585" ] || [ "$number" = "586" ] || [ "$number" = "351" ] || [ "$number" = "676" ]; then
+        # Deoxys, Deerling, Sawsbuck, Castform, Furfrou
+        formcap=5
+    fi
+    if [ "$number" = "412" ] || [ "$number" = "413" ] || [ "$number" = "646" ]; then
+        # Burmy, Wormadam, Kyurem
+        formcap=4
+    fi
+    if [ "$number" = "479" ]; then
+        # Rotom
+        formcap=7
+    fi
+
+    formnum=2
+    while [ $formnum -lt $formcap ]; do
+        echo $url$numstring"_f$formnum.png"
+        curl -o $numstring"_f$formnum.png" $url$numstring"_f$formnum.png"
+        formnum=$((formnum + 1))
+    done
+done

@@ -81,9 +81,9 @@ function requestDataToSave(i, limit, apiDataType) {
         dataType: 'jsonp',
         success: function(data){
         	//alert(i);
-        	if (apiDataType == 'move') {
+        	//if (apiDataType == 'move') {
         		// append move type by linking to list
-        	}
+        	//}
 
         	add_document(apiDataType, apiDataType+'-'+i, data)
         	updateLoadBar(i, limit, apiDataType+'LoadBar');
@@ -94,8 +94,7 @@ function requestDataToSave(i, limit, apiDataType) {
 
 function saveMoves() {
 	alert('Saving Moves...')
-	//$.get()
-	//requestDataToSave(1, 625, 'move');
+	requestDataToSave(1, 625, 'move');
 }
 function saveTypes() {
 	alert('Saving Types...');
