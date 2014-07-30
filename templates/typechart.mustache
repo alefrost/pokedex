@@ -1,0 +1,11 @@
+<table class="table table-bordered">
+	<tr><th></th>{{#header}}<th class="name">{{name}}</th>{{/header}}</tr>
+	{{#types}}
+	<tr>
+		<td class="{{name}}">{{name}}</td>
+		{{#effectiveness}}
+		<td class="{{multiplier}}-type">{{multiplier}}</td>
+		{{/effectiveness}}
+	</tr>
+	{{/types}}
+</table>

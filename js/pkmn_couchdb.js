@@ -26,6 +26,16 @@ function add_document(doc_type, id, doc) {
 	  });
 }
 
+function update_document(doc) {
+	var doc_url = couch_url + 'pokedex_dev01/';
+	$.ajax({
+		url: doc_url + doc._id,
+		data: JSON.stringify(doc),
+		contentType: "application/json",
+		type: 'PUT'
+	})
+}
+
 function requestPokemon(i, limit) {
 	if (i > limit) {
 		alert("Requested all Pokemon");
@@ -44,12 +54,11 @@ function requestPokemon(i, limit) {
         	if (nat_id > 10032) {
         		// mark mega evolutions
         		doc_type += '-mega';
-        		alert(pokemon.name);
         	} else if (nat_id > 10000 && nat_id < 10033) {
         		// mark additional forms
         		doc_type += '-form';
         	} 	// normal pokemon; do thing special;
-
+        	alert(nat_id);
         	add_document(doc_type, 'pokemon-'+nat_id, pokemon)
         	updateLoadBar(i, limit, 'pokemonLoadBar');
         	requestPokemon(i+1, limit);
@@ -64,8 +73,9 @@ function addPokedexAndPokemon() {
             dataType: 'jsonp',
             success: function(data){
                 pokedex = data.pokemon;
+                pokedex.sort(pokedex_sort)
                 alert('got pokedex');
-                requestPokemon(0,pokedex.length);
+                requestPokemon(66,69);//pokedex.length);
             }
         });
 }
@@ -125,4 +135,15 @@ function updateLoadBar(current, total, divID) {
 		var html = Mustache.to_html(template, data);
         $('#'+divID).html(html);
 	})
+}
+
+function addLocalURIs() {
+	$.getJSON(couch_url+'pokedex_dev01/_design/pokemon/_view/base', function(view) {
+		var limit = 80;//view.rows.length
+		for(var i=58; i<=limit;i++) {
+			view.rows[i].value["local_image_uri"] = '/pokedex/images/' +  ('000' + view.rows[i].value.national_id).substr(-3) + '.png';
+			update_document(view.rows[i].value);
+        	updateLoadBar(i, limit, 'localURIsLoadBar');
+		}
+	});
 }

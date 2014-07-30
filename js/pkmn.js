@@ -1,3 +1,11 @@
+function SearchPokemon() {
+    var name = $('#PokeSearch').val();
+    if (name == null || name == "") {
+        return false;
+    }
+    window.location.href = "/pokedex/pages/display_pokemon.html?pkmn="+name;
+}
+
 /* Renders pokemon of the given ID
     PARAMS:
     - int <id>: national_id of Pokemon
@@ -9,7 +17,6 @@ function getPokemonById(id, renderId)
         url: 'http://127.0.0.1:5984/pokedex_dev01/pokemon-'+ id + '/',
         dataType: 'json',
         success: function(pokemon){
-            // submit post request to php file... might not work due to JSONP datatype
             var img = '/pokedex/images/'+('000' + id).substr(-3)+'.png';
             pokemon["image_src"] = img;
             pokemon["forms"] = getForms(pokemon.name);
@@ -206,27 +213,50 @@ function pokedex_sort(a, b) {
     var bid = parseInt(b.resource_uri.slice(15,-1), 10);
     return aid - bid;
 }
+function displayDexRow(pkmn, renderID) {
+    $.ajax({
+        url: '/pokedex/templates/pokedex.mustache',
+        success: function(template) {
+            var html = Mustache.to_html(template, pkmn);
+            $('#'+pkmn.national_id +'-pkmn').html(html);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert(JSON.stringify(jqXHR) + ":\n" + textStatus);
+        }
+    });
+}
 function displayPokedex(renderID) {
     $.ajax({
-            url: 'http://pokeapi.co/api/v1/pokedex/1/',
-            dataType: 'jsonp',
-            success: function(data){
-                pokedex = data.pokemon;
-
-                //list comes in garbled and needs sorted by national dex ID
-                pokedex.sort(pokedex_sort);
-
-                // Display each row
-                var htmlstr = "";
-                for  (var i = 0; i < pokedex.length; i++) {
-                    //if(i >= 718) {break;}
-                    var nat_id = pokedex[i].resource_uri.slice(15,-1);
-                    htmlstr += '<img id="img'+pokedex[i].name+'" src="http://serebii.net/xy/pokemon/' + ('000' + nat_id).substr(-3) + '.png" />';
-                    htmlstr += '<p>'+ nat_id + " : " + pokedex[i].name + '</p>\n';
-                }
-                $('#'+renderID).html(htmlstr);
+        url: 'http://127.0.0.1:5984/pokedex_dev01/_design/pokemon/_view/base',
+        dataType: 'json',
+        success: function(view){
+            var limit = view.rows.length;
+            for(var i=0;i<limit;i++){
+                ///var pkmn = view.rows[i].value;
+                $('#'+renderID).append('<tr id="'+view.rows[i].value.national_id+'-pkmn"></tr>');
+                displayDexRow(view.rows[i].value, renderID);
+                
             }
-        });
+        }
+    });
+}
+
+function typechart(renderID) {
+    $.ajax({
+        url: 'http://127.0.0.1:5984/pokedex_dev01/_design/types/_view/all',
+        dataType: 'json',
+        success: function(view){
+            var limit = view.rows.length;
+            var chart = {"header": view.rows.map(function(t){return t.name;})};
+            alert(JSON.stringify(header));
+            /*for(var i=0;i<limit;i++){
+                ///var pkmn = view.rows[i].value;
+                $('#'+renderID).append('<tr id="'+view.rows[i].value.national_id+'-pkmn"></tr>');
+                displayDexRow(view.rows[i].value, renderID);
+                
+            }*/
+        }
+    });
 }
 
 /* ------------------ One-Time-Execution functions go below here ------------------ */

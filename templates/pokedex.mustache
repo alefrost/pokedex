@@ -1,0 +1,15 @@
+
+<td style="padding-left:20px;"><h2>{{national_id}}</h2></td>
+<td class="col-md-1">
+	<a  href="/pokedex/pages/display_pokemon.html?pkmn={{national_id}}" class="thumbnail" style="margin-top:20px;">
+      <img src="{{local_image_uri}}" alt="...">
+    </a>
+</td>
+<td><h2>{{name}}</h2></td>
+<td style="padding-top:20px; padding-right:20px;" class="">
+	{{#types}}
+	<ul class="list-group pull-right">
+		<li class="list-group-item {{name}}">{{name}}</li>
+	</ul>
+	{{/types}}
+</td>
