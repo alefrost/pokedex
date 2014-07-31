@@ -1,8 +1,13 @@
 <table class="table table-bordered">
-	<tr><td></td>{{#header}}<td class="{{.}}" style="padding:4px;"><img src="/pokedex/images/icons/{{.}}.gif" /></td>{{/header}}</tr>
+	<tr>
+		<td><small class="pull-right">atk\def</small></td>
+		{{#header}}
+		<td class="{{.}}" style="padding:4px;" align="center"><img src="/pokedex/images/icons/{{.}}.gif" /></td>
+		{{/header}}
+	</tr>
 	{{#types}}
 	<tr>
-		<td class="{{name}}" style="padding:4px;"><img src="/pokedex/images/icons/{{name}}.gif" /></td>
+		<td class="{{name}}" style="padding:4px;" align="center"><img src="/pokedex/images/icons/{{name}}.gif"/></td>
 		{{#effectiveness}}
 		<td class="{{.}}-type"></td>
 		{{/effectiveness}}

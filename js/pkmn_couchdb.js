@@ -36,6 +36,10 @@ function update_document(doc) {
 	})
 }
 
+function getIdFromURI(uri) {
+	return uri.slice(16,-1);
+}
+
 function requestPokemon(i, limit) {
 	if (i > limit) {
 		alert("Requested all Pokemon");
@@ -139,11 +143,62 @@ function updateLoadBar(current, total, divID) {
 
 function addLocalURIs() {
 	$.getJSON(couch_url+'pokedex_dev01/_design/pokemon/_view/base', function(view) {
-		var limit = 80;//view.rows.length
-		for(var i=58; i<=limit;i++) {
+		var limit = view.rows.length;
+		for(var i=0; i<=limit;i++) {
 			view.rows[i].value["local_image_uri"] = '/pokedex/images/' +  ('000' + view.rows[i].value.national_id).substr(-3) + '.png';
 			update_document(view.rows[i].value);
         	updateLoadBar(i, limit, 'localURIsLoadBar');
+		}
+	});
+}
+
+function buildEvoTrees() {
+	var explored = [];
+	// getEvos() is a recursive function to compile a single evolution tree for a given pokemon family
+	function getEvos(pokemon,tree,method,detail,level) {
+		//alert(JSON.stringify(tree));
+		tree.push({
+				"name":pokemon.name, 
+				"national_id":pokemon.national_id, 
+				"local_image_uri":pokemon.local_image_uri,
+				"method":method,
+				"detail":detail,
+				"level":level
+			});
+		explored.push(pokemon.national_id);
+		if (pokemon.evolutions.length == 1) {
+			$.ajax({
+				url: couch_url+'pokedex_dev01/pokemon-'+getIdFromURI(pokemon.evolutions[0].resource_uri),
+				dataType: 'json',
+				async: false,
+				success: function(pkmn) {
+					tree = getEvos(pkmn,tree,pokemon.evolutions[0].method,pokemon.evolutions[0].detail,pokemon.evolutions[0].level);
+				}
+			});
+		} else if (pokemon.evolutions.length > 1) {
+			pokemon.evolutions.map(function (evo) {
+				$.ajax({
+					url: couch_url+'pokedex_dev01/pokemon-'+getIdFromURI(evo.resource_uri),
+					dataType: 'json',
+					async: false,
+					success: function(pkmn) {
+						tree.push(getEvos(pkmn,[],evo.method,evo.detail,evo.level));
+					}
+				});	
+			})
+		}
+		return tree;
+	}
+
+	$.getJSON(couch_url+'pokedex_dev01/_design/pokemon/_view/base', function(view) {
+		var limit = 264;//view.rows.length;
+		for (var i=264;i<=limit;i++) {
+			var tree = [];
+			if ($.inArray(view.rows[i].value.national_id, explored) == -1) {
+				getEvos(view.rows[i].value,tree,null,null,null));
+				//alert(explored);
+				//getEvos(view.rows[i].value);
+			}
 		}
 	});
 }
