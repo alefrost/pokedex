@@ -1,8 +1,24 @@
 body {
-	padding-top: 20px;
+	padding-top: 70px;
 }
 .tab-pane{
 	padding-top:5px;
+}
+.x0-type {
+	color: dark-gray;
+	background-color: #CCCCCC;
+}
+.x1-type {
+	color: gray;
+	background-color: white;
+}
+.half-type {
+	color: dark-gray;
+	background-color: #FF5C5C;
+}
+.x2-type {
+	color: dark-gray;
+	background-color: #99cc99;
 }
 .bug{
 	color: white;

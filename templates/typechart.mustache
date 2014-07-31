@@ -1,11 +1,19 @@
 <table class="table table-bordered">
-	<tr><th></th>{{#header}}<th class="name">{{name}}</th>{{/header}}</tr>
+	<tr><td></td>{{#header}}<td class="{{.}}" style="padding:4px;"><img src="/pokedex/images/icons/{{.}}.gif" /></td>{{/header}}</tr>
 	{{#types}}
 	<tr>
-		<td class="{{name}}">{{name}}</td>
+		<td class="{{name}}" style="padding:4px;"><img src="/pokedex/images/icons/{{name}}.gif" /></td>
 		{{#effectiveness}}
-		<td class="{{multiplier}}-type">{{multiplier}}</td>
+		<td class="{{.}}-type"></td>
 		{{/effectiveness}}
 	</tr>
 	{{/types}}
+</table>
+<table id="key" class="table table-bordered">
+	<tr>
+		<td class="x0-type">x0</td>
+		<td class="x1-type">x1</td>
+		<td class="half-type">x1/2</td>
+		<td class="x2-type">x2</td>
+	</tr>
 </table>

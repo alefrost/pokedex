@@ -241,20 +241,37 @@ function displayPokedex(renderID) {
     });
 }
 
-function typechart(renderID) {
+function typechart(renderId) {
     $.ajax({
         url: 'http://127.0.0.1:5984/pokedex_dev01/_design/types/_view/all',
         dataType: 'json',
         success: function(view){
             var limit = view.rows.length;
-            var chart = {"header": view.rows.map(function(t){return t.name;})};
-            alert(JSON.stringify(header));
-            /*for(var i=0;i<limit;i++){
-                ///var pkmn = view.rows[i].value;
-                $('#'+renderID).append('<tr id="'+view.rows[i].value.national_id+'-pkmn"></tr>');
-                displayDexRow(view.rows[i].value, renderID);
+            var chart = {"header": view.rows.map(function(t){return t.value.name.toLowerCase();})};
+            //alert(JSON.stringify(chart.header));
+            chart["types"] = [];
+            for(var i=0;i<limit;i++){
+                var type = {"name": view.rows[i].value.name.toLowerCase()};
+                type["effectiveness"] = view.rows.map(function(t) {
+                    var type_name = t.value.name.toLowerCase();
+                    if ($.inArray(type_name, view.rows[i].value.super_effective.map(function(se){return se.name})) > -1) {
+                        return "x2";
+                    } else if ($.inArray(type_name, view.rows[i].value.ineffective.map(function(ie){return ie.name})) > -1) {
+                        return "half";
+                    } else if ($.inArray(type_name, view.rows[i].value.no_effect.map(function(no){return no.name})) > -1) {
+                        return "x0";
+                    } else {
+                        return "x1";
+                    }
+                });
+                chart["types"].push(type);
+            }
+            //alert(JSON.stringify(chart));
+            $.get('/pokedex/templates/typechart.mustache', function(template) {
+                var html = Mustache.to_html(template, chart);
+                $('#'+renderId).html(html);
                 
-            }*/
+            });
         }
     });
 }
