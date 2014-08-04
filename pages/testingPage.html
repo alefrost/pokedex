@@ -3,16 +3,19 @@
 <head>
   <meta charset="UTF-8">
 	<title>Pokemon Mustache Test</title>
-	<!-- Boostrap, Jquery, & Mustache-->
+	<!-- Boostrap, Jquery, D3 & Mustache -->
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></link>
+	<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
 	<script type="text/javascript" src="/js/mustache.js"></script>
 
 	<script type="text/javascript" src="/pokedex/js/pkmn_couchdb.js"></script>
 	<script type="text/javascript" src="/pokedex/js/pkmn.js"></script>
 	<script type="text/javascript" src="/pokedex/js/utils.js"></script>
 	<link rel="stylesheet" href="/pokedex/css/pokemon.css"></link>
+	<script type="text/javascript" src="/pokedex/js/pkmn_visualizations.js"></script>
+	<link rel="stylesheet" href="/pokedex/css/pkmn_nodes.css"></link>
 
 	<script type="text/javascript">
 	    //getPokemonByName(querySt('pkmn'), 'testarea');
@@ -69,8 +72,12 @@
 	  </div>
 	
 	</nav>
-
-	<div id='testarea'></div>
+	<div class="col-md-8">
+		<div class="panel panel-success">
+			<div class="panel-heading"><h2>Evolutions</h2></div>
+			<div id="testarea" class="panel-body" align="center"></div>	
+		</div>
+	</div>
   </div><!--container-->
 </body>
 </html>

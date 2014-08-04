@@ -28,6 +28,11 @@ function getPokemonById(id, renderId)
                 $.get('/pokedex/templates/forms.mustache', function(partial) {
                     var html = Mustache.to_html(template, pokemon, {'forms': partial});
                     $('#'+renderId).html(html);
+
+                    //displayEvoTree is from pkmn_visualizations.js
+                    //unexpected token 'u'
+                    alert(JSON.stringify(JSON.parse(pokemon.evoTree.tree)));
+                    displayEvoTree('evoTree', JSON.parse(pokemon.evoTree.tree));
                 })
             });
         },

@@ -152,53 +152,88 @@ function addLocalURIs() {
 	});
 }
 
+
+/*
+	This function builds the evolution trees of each pokemon and maps them to that pokemon. The data structure
+	is designed to be usable by a d3.js tree layout, which means each evolution tree will have this recursive
+	format:
+
+	pokemon node = { name: <pokemon name>, children:[<list of pokemon nodes of evolutions>]}
+*/
 function buildEvoTrees() {
-	var explored = [];
-	// getEvos() is a recursive function to compile a single evolution tree for a given pokemon family
-	function getEvos(pokemon,tree,method,detail,level) {
-		//alert(JSON.stringify(tree));
-		tree.push({
+	// ignore pokemon that start with baby forms so the tree starts at the baby form.
+	var explored = [25,26,35,36,39,40,106,107,113,122,124,125,126,143,183,184,185,202,226,237,315];
+
+	//tracking variables
+	var maxDepth;   // longest chain of evolutions in a given tree
+	var maxBreadth; // highest number of branching in a given tree
+	var involved;   // list of national_ids of all pokemon in a tree
+
+	// getEvos() is a recursive function that returns the chain of evolutions from the given pokemon
+	// until the highest evolution that it can reach. method, detail, and level are passed in from 
+	// previous calls to maintain information about how the predecessor evolves to the current pokemon.
+	function getEvos(pokemon, method, detail, level, depth) {
+		// update global variables
+		explored.push(pokemon.national_id);
+		if (pokemon.national_id < 718) {
+			involved.push(pokemon.national_id);
+		}
+		depth++;
+		if (maxDepth <= depth) {maxDepth = depth;}
+
+		// set required information
+		var branch = {
 				"name":pokemon.name, 
 				"national_id":pokemon.national_id, 
 				"local_image_uri":pokemon.local_image_uri,
-				"method":method,
-				"detail":detail,
-				"level":level
-			});
-		explored.push(pokemon.national_id);
-		if (pokemon.evolutions.length == 1) {
-			$.ajax({
-				url: couch_url+'pokedex_dev01/pokemon-'+getIdFromURI(pokemon.evolutions[0].resource_uri),
-				dataType: 'json',
-				async: false,
-				success: function(pkmn) {
-					tree = getEvos(pkmn,tree,pokemon.evolutions[0].method,pokemon.evolutions[0].detail,pokemon.evolutions[0].level);
-				}
-			});
-		} else if (pokemon.evolutions.length > 1) {
-			pokemon.evolutions.map(function (evo) {
+				"method": method, // method of evolution. Null on basic pokemon
+				"detail": detail, // detail of evolution. Null on basic pokemon
+				"level": level // will only be populated by levelup evolutions
+			};
+		if (pokemon.evolutions && pokemon.evolutions.length > 0) {
+			// set new maximum breadth if applicable
+			if (pokemon.evolutions.length > maxBreadth) {maxBreadth = pokemon.evolutions.length;}
+
+			// get children nodes by recurring on each evolution
+			branch["children"] = pokemon.evolutions.map(function (evo) {
+				var e;
 				$.ajax({
 					url: couch_url+'pokedex_dev01/pokemon-'+getIdFromURI(evo.resource_uri),
 					dataType: 'json',
 					async: false,
 					success: function(pkmn) {
-						tree.push(getEvos(pkmn,[],evo.method,evo.detail,evo.level));
+						e = getEvos(pkmn, evo.method, evo.detail, evo.level, depth);
 					}
-				});	
+				});
+				return e;
 			})
 		}
-		return tree;
+		return branch;
 	}
 
+	var id = 0;
 	$.getJSON(couch_url+'pokedex_dev01/_design/pokemon/_view/base', function(view) {
-		var limit = 264;//view.rows.length;
-		for (var i=264;i<=limit;i++) {
-			var tree = [];
+		var limit =view.rows.length;
+
+		for (var i=id;i<limit;i++) {
 			if ($.inArray(view.rows[i].value.national_id, explored) == -1) {
-				getEvos(view.rows[i].value,tree,null,null,null));
-				//alert(explored);
-				//getEvos(view.rows[i].value);
+				//reset tracking variables
+				maxDepth = 0;
+				maxBreadth = 1;
+				involved = [];
+
+				var tree = {"tree": getEvos(view.rows[i].value,null,null,null,maxDepth)};
+				tree["depth"] = maxDepth;
+				tree["breadth"] = maxBreadth;
+				var strTree = JSON.stringify(tree);
+				//displayEvoTree('testarea', tree);
+				
+				for (var j=0;j<involved.length;j++) {
+					view.rows[involved[j]-1].value["evoTree"] = strTree;
+					update_document(view.rows[involved[j]-1].value);
+				}
 			}
+			updateLoadBar(i+1, limit, 'evoTreeLoadBar')
 		}
 	});
 }

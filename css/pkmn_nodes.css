@@ -1,0 +1,25 @@
+.node text { 
+  font-size: 14px;
+  fill: #555;
+  text-decoration: overline;
+  stroke: #333;
+  stroke-width: .5px;
+}
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+/*svg {
+    background-color: #DDD;
+}*/
